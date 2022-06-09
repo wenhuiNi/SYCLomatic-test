@@ -31,11 +31,13 @@ void atomicRefExtKernel(int* atom_arr){
     atom_arr[1] = atomic_ref.exchange(3);
 
     // Atomic_ref_ext compare_exchange_weak
-    atomic_ref.compare_exchange_weak(temp1,4);
     atom_arr[2] = atomic_ref.load();
+    atomic_ref.compare_exchange_weak(temp1,4);
+    
     // Atomic_ref_ext compare_exchange_strong
-    atomic_ref.compare_exchange_strong(temp2,8);
     atom_arr[3] = atomic_ref.load();
+    atomic_ref.compare_exchange_strong(temp2,8);
+    
 
     //Atomic_ref_ext fetch_add
     atom_arr[4] =  atomic_ref.fetch_add(1);
@@ -58,6 +60,7 @@ void atomicRefExtKernel(int* atom_arr){
 int verify(int *testDataDevice,int *testDataHost, const int len){
   bool result = true;
   for(int i = 0;i<len;++i ){
+    printf("device result: %d , cpu result: %d \n",testDataDevice[i],testDataHost[i]);
     if(testDataDevice[i]!=testDataHost[i])
     {
       printf("device result: %d , cpu result: %d . failure with %d\n",testDataDevice[i],testDataHost[i],i);
